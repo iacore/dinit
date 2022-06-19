@@ -17,7 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        ref: 08515d1bee5d9ea6cec6df4605ba6241f423ff19
+        ref: a5ef6d720050b64b531694465357d30d2fa2b991
     - name: Getting depends
       run: apt-get update && apt-get install gcc make m4 g++ -y
     - name: Print g++ arch
