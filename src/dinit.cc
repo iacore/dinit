@@ -1026,6 +1026,7 @@ static void find_cgroup_path() noexcept
         while (true) {
             std::cout << "*** read: cur_read=" << cur_read << " cgroup_line_sz=" << cgroup_line_sz << std::endl;
             ssize_t r = read(pfd, cgroup_line.data() + cur_read, cgroup_line_sz - cur_read);
+            std::cout << "*** read result: r=" << r << std::endl;
             if (r == 0) {
                 if (line_end_pos == (size_t)-1) {
                     line_end_pos = cur_read + 1;
@@ -1082,11 +1083,13 @@ static void find_cgroup_path() noexcept
             return;
         }
 
-        std::cout << "*** setting cgroups_path" << std::endl;
+        std::cout << "*** setting cgroups_path; colon_count=" << colon_count << "second_colon_pos=" << second_colon_pos << " line_end_pos = " << line_end_pos << std::endl;
         cgroups_path.clear();
         size_t first_char_pos = second_colon_pos + 2;
-        size_t root_path_len = line_end_pos - first_char_pos;
-        cgroups_path.append(cgroup_line.data() + first_char_pos, root_path_len);
+        if (first_char_pos < line_end_pos) {
+            size_t root_path_len = line_end_pos - first_char_pos;
+            cgroups_path.append(cgroup_line.data() + first_char_pos, root_path_len);
+        }
         have_cgroups_path = true;
         return;
     }
