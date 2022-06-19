@@ -490,7 +490,7 @@ int dinit_main(int argc, char **argv)
 
     #if SUPPORT_CGROUPS
     if (!have_cgroups_path) {
-        //find_cgroup_path();
+        find_cgroup_path();
         // We will press on if the cgroup root path could not be identified, since services might
         // not require cgroups anyway and/or might only specify absolute cgroups paths.
     }
@@ -1022,7 +1022,9 @@ static void find_cgroup_path() noexcept
         size_t second_colon_pos = 0;
         std::vector<char, default_init_allocator<char>> cgroup_line(cgroup_line_sz);
 
+        std::cout << "*** find_cgroup_path" << std::endl;
         while (true) {
+            std::cout << "*** read: cur_read=" << cur_read << " cgroup_line_sz=" << cgroup_line_sz << std::endl;
             ssize_t r = read(pfd, cgroup_line.data() + cur_read, cgroup_line_sz - cur_read);
             if (r == 0) {
                 if (line_end_pos == (size_t)-1) {
@@ -1063,6 +1065,7 @@ static void find_cgroup_path() noexcept
             }
         };
 
+        std::cout << "*** closing pfd" << std::endl;
         close(pfd);
         pfd = -1;
 
@@ -1079,6 +1082,7 @@ static void find_cgroup_path() noexcept
             return;
         }
 
+        std::cout << "*** setting cgroups_path" << std::endl;
         cgroups_path.clear();
         size_t first_char_pos = second_colon_pos + 2;
         size_t root_path_len = line_end_pos - first_char_pos;
