@@ -490,7 +490,7 @@ int dinit_main(int argc, char **argv)
 
     #if SUPPORT_CGROUPS
     if (!have_cgroups_path) {
-        find_cgroup_path();
+        //find_cgroup_path();
         // We will press on if the cgroup root path could not be identified, since services might
         // not require cgroups anyway and/or might only specify absolute cgroups paths.
     }
